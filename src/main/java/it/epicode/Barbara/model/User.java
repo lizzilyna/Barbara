@@ -5,6 +5,7 @@ import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Entity
 @Data
@@ -17,16 +18,32 @@ public class User {
     private String password;
     private String email;
 
-    @OneToMany (mappedBy = "offeredBy", cascade =CascadeType.ALL)//mappato nel campo "Offerto da", tabella help; le modifiche a User vanno, a cascate, su help)
-    @Column(name="offered_helps")
-    private List<Help>offeredHelps=new ArrayList<>();
 
 
-    @OneToMany (mappedBy = "requestedBy", cascade = CascadeType.ALL)
-    @Column(name = "requested_helps")
-    private List<Help>requestedHelps=new ArrayList<>();
+    @OneToMany(mappedBy = "offeredBy", cascade = CascadeType.ALL)
+//mappato nel campo "Offerto da", tabella help; le modifiche a User vanno, a cascate, su help)
+
+    private List<Help> offeredBy = new ArrayList<>();
 
 
+    @OneToMany(mappedBy = "offeredBy", cascade = CascadeType.ALL)
+
+    private List<Help> requestedby = new ArrayList<>();
+
+
+    //***COSTRUTTORI***
+
+
+    public User() {
+    }
+
+    public User(String username, String password, String email) {
+        this.id = new Random().nextInt(1, Integer.MAX_VALUE);
+        this.username = username;
+        this.password = password;
+        this.email = email;
+
+    }
 
     //***GETTERS E SETTERS***
     public int getId() {
@@ -42,7 +59,7 @@ public class User {
     }
 
     public void setUsername(String username) {
-        username = username;
+        this.username = username;
     }
 
     public String getPassword() {
@@ -61,19 +78,4 @@ public class User {
         this.email = email;
     }
 
-    public List<Help> getOfferedHelps() {
-        return offeredHelps;
-    }
-
-    public void setOfferedHelps(List<Help> offeredHelps) {
-        this.offeredHelps = offeredHelps;
-    }
-
-    public List<Help> getRequestedHelps() {
-        return requestedHelps;
-    }
-
-    public void setRequestedHelps(List<Help> requestedHelps) {
-        this.requestedHelps = requestedHelps;
-    }
 }
